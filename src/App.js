@@ -1,22 +1,49 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import UploadBox from './UploadBox';
+import Comparison from './Comparison';
 import './App.css';
 
 function App() {
+  const [json1, setJson1] = useState(null);
+  const [json2, setJson2] = useState(null);
+  const [file1, setFile1] = useState(null);
+  const [file2, setFile2] = useState(null);
+  const [error, setError] = useState('');
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <p>L10nSync</p>
+
+        <div className="upload-container">
+          <UploadBox
+          
+            index={0}
+            currentFile={file1}
+            otherFile={file2}
+            setParsedData={(data, file) => {
+              setJson1(data);
+              setFile1(file);
+            }}
+            setError={setError}
+          />
+
+          <UploadBox
+            
+            index={1}
+            currentFile={file2}
+            otherFile={file1}
+            setParsedData={(data, file) => {
+              setJson2(data);
+              setFile2(file);
+            }}
+            setError={setError}
+          />
+        </div>
+
+        {error && <p className="error-text">{error}</p>}
+
+        <Comparison file1={json1} file2={json2} />
       </header>
     </div>
   );
